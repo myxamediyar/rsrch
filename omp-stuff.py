@@ -4,7 +4,7 @@ import heapq
 #similar letters are mapped to the same letter
 def getAsci(char):
     char = char.lower()
-    a = [set("ÀÁÂÃÄÅàáâãäå"), set("ÈÉÊËèéêë"), "ÌÍÎÏìíîï", set("ÒÓÔÕÖØòóôõöø"), set("ÙÚÛÜùúûüÝýÿ")]
+    a = [set("ÀÁÂÃÄÅàáâãäå"), set("ÈÉÊËèéêë"), set("ÌÍÎÏìíîï"), set("ÒÓÔÕÖØòóôõöø"), set("ÙÚÛÜùúûüÝýÿ")]
     d = {0 : "a", 1: "e", 2: "i", 3: "o", 4: "u"}
     for i, j in enumerate(a):
         if char in j:
@@ -38,11 +38,11 @@ def findClosest(word, text, count):
     wordAuto = autocorr(word) / len(word)
     autoDot = np.sqrt(np.dot(wordAuto, wordAuto))
     for i in text:
-        resCor = corr(word, i) / len(i)
+        resCor = corr(word, i) / max(len(i), len(word))
         resDot = np.sqrt(np.dot(resCor, resCor))
-        ompRes.append(resDot)
-    print("OMP:", ompRes)
-    return heapq.nlargest(count, ompRes), autoDot
+        ompRes.append((i, resDot))
+    print(ompRes)
+    return (word, autoDot), heapq.nlargest(count, ompRes, key=lambda x: x[1])
 
 text = "dajbefa dafnkja abcdef abdecf àbcdef loool chefCurry"
 word = "abcdef"
